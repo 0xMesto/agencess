@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlitzLaunchpad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4CAF50;
+            --dark: #2C3E50;
+            --light: #ECEFF1;
+            --white: #FFFFFF;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .navbar {
+            background-color: transparent;
+            transition: all 0.5s ease;
+            padding: 20px 0;
+        }
+        
+        .navbar.scrolled {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand, .nav-link {
+            color: var(--white) !important;
+            transition: color 0.3s ease;
+        }
+        
+        .navbar.scrolled .navbar-brand, .navbar.scrolled .nav-link {
+            color: var(--dark) !important;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 30px;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 150px 0 100px;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+        
+        .hero h1 {
+            font-weight: 700;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .why-choose-us {
+            background-color: var(--white);
+            padding: 100px 0;
+        }
+        
+        .feature-card {
+            background-color: var(--light);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card:hover .feature-icon {
+            color: var(--white);
+        }
+        
+        .process-step {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            z-index: -1;
+        }
+        
+        .process-step:last-child::after {
+            display: none;
+        }
+        
+        .blog-post {
+            background-color: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .blog-post:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            background-color: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .chat-header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .chat-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+        }
+        
+        .chat-input input {
+            flex-grow: 1;
+            margin-right: 10px;
+            border-radius: 20px;
+            border: 1px solid var(--light);
+            padding: 10px 15px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 50px 0 20px;
+        }
+        
+        .social-icon {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.5s ease;
+        }
+        
+        .animate-on-scroll.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">BlitzLaunchpad</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#approach">Our Approach</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-primary" href="#contact">GET IN TOUCH</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 animate-on-scroll">
+                    <h1>Launch Your Startup at Lightning Speed</h1>
+                    <p>We turn your brilliant ideas into market-ready products with our expert development services.</p>
+                    <a href="#services" class="btn btn-light btn-lg">Learn More</a>
+                </div>
+                <div class="col-md-6 animate-on-scroll">
+                    <img src="https://placehold.co/600x400" alt="Hero Image" class="img-fluid rounded-3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Services -->
+    <section id="services" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">Our Key Services</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4 animate-on-scroll">
+                    <div class="service-card text-center p-4">
+                        <i class="fas fa-mobile-alt service-icon"></i>
+                        <h3>Mobile App Development</h3>
+                        <p>Create stunning, user-friendly mobile applications for iOS and Android platforms.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 animate-on-scroll">
+                    <div class="service-card text-center p-4">
+                        <i class="fas fa-globe service-icon"></i>
+                        <h3>Web Development</h3>
+                        <p>Build responsive, scalable web applications using cutting-edge technologies.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 animate-on-scroll">
+                    <div class="service-card text-center p-4">
+                        <i class="fas fa-cogs service-icon"></i>
+                        <h3>Custom Software Solutions</h3>
+                        <p>Tailor-made software to address your unique business challenges and goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-choose-us py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">Why Choose Us</h2>
+            <div class="row">
+                <div class="col-md-3 mb-4 animate-on-scroll">
+                    <div class="feature-card text-center">
+                        <i class="fas fa-dollar-sign feature-icon"></i>
+                        <h4>Startup-Friendly Pricing</h4>
+                        <p>Flexible options tailored to startup budgets.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 animate-on-scroll">
+                    <div class="feature-card text-center">
+                        <i class="fas fa-code feature-icon"></i>
+                        <h4>Tech Stack Versatility</h4>
+                        <p>Proficiency in cutting-edge technologies.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 animate-on-scroll">
+                    <div class="feature-card text-center">
+                        <i class="fas fa-rocket feature-icon"></i>
+                        <h4>Startup Ecosystem Expertise</h4>
+                        <p>Solutions aligned with your growth trajectory.</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4 animate-on-scroll">
+                    <div class="feature-card text-center">
+                        <i class="fas fa-headset feature-icon"></i>
+                        <h4>Post-Launch Support</h4>
+                        <p>Ongoing support to ensure product success.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How We Work -->
+    <section id="approach" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">How We Work</h2>
+            <div class="row">
+                <div class="col-md-3 text-center mb-4 animate-on-scroll">
+                    <div class="process-step">1</div>
+                    <h4>Discovery</h4>
+                    <p>We analyze your needs and define project scope</p>
+                </div>
+                <div class="col-md-3 text-center mb-4 animate-on-scroll">
+                    <div class="process-step">2</div>
+                    <h4>Design</h4>
+                    <p>Create wireframes and visual designs</p>
+                </div>
+                <div class="col-md-3 text-center mb-4 animate-on-scroll">
+                    <div class="process-step">3</div>
+                    <h4>Development</h4>
+                    <p>Build and test your product</p>
+                </div>
+                <div class="col-md-3 text-center mb-4 animate-on-scroll">
+                    <div class="process-step">4</div>
+                    <h4>Launch</h4>
+                    <p>Deploy and provide ongoing support</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Snippet -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 animate-on-scroll">
+                    <img src="https://placehold.co/600x400" alt="About Us" class="img-fluid rounded-3">
+                </div>
+                <div class="col-md-6 animate-on-scroll">
+                    <h2 class="mb-4">About Us</h2>
+                    <p>At BlitzLaunchpad, we're passionate about turning innovative ideas into successful startups. Our team of expert developers and designers are dedicated to helping entrepreneurs bring their visions to life.</p>
+                    <a href="#" class="btn btn-primary">Learn More About Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Blog Highlights -->
+<section id="blog" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 animate-on-scroll">Latest from Our Blog</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4 animate-on-scroll">
+                <div class="blog-post">
+                    <img src="https://placehold.co/600x400" class="img-fluid" alt="Blog Post">
+                    <div class="p-4">
+                        <h5>10 Essential Tools for Startup Success</h5>
+                        <p>Discover the must-have tools that can help your startup thrive in today's competitive landscape.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-on-scroll">
+                <div class="blog-post">
+                    <img src="https://placehold.co/600x400" class="img-fluid" alt="Blog Post">
+                    <div class="p-4">
+                        <h5>The Future of AI in Startup Development</h5>
+                        <p>Explore how artificial intelligence is shaping the future of startup development and innovation.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 animate-on-scroll">
+                <div class="blog-post">
+                    <img src="https://placehold.co/600x400" class="img-fluid" alt="Blog Post">
+                    <div class="p-4">
+                        <h5>5 Coding Best Practices for Scalable Apps</h5>
+                        <p>Learn the essential coding practices that will help you build scalable and maintainable applications.</p>
+                        <a href="#" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Live Chat Widget -->
+<div class="chat-widget" id="chatWidget">
+    <div class="chat-header">
+        <h5 class="mb-0">Chat with Us</h5>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <p>Welcome to BlitzLaunchpad! How can we help you today?</p>
+    </div>
+    <div class="chat-input">
+        <input type="text" class="form-control" id="chatInput" placeholder="Type your message...">
+        <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 animate-on-scroll">
+                <h5>Contact Us</h5>
+                <p>Email: info@blitzlaunchpad.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+            </div>
+            <div class="col-md-4 animate-on-scroll">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#approach">Our Approach</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 text-md-end animate-on-scroll">
+                <h5>Follow Us</h5>
+                <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <p>&copy; 2024 BlitzLaunchpad. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#" class="text-white me-2">Privacy Policy</a>
+                <a href="#" class="text-white">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (message) {
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+            // Simulate a response (replace with actual backend integration)
+            setTimeout(() => {
+                chatBody.innerHTML += `<p><strong>BlitzLaunchpad:</strong> Thank you for your message. Our team will get back to you shortly.</p>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+    }
+
+    // Add event listener for Enter key
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Animate elements on scroll
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    animateElements.forEach(element => {
+        observer.observe(element);
+    });
+
+    // Countdown timer for chat availability
+    function updateChatAvailability() {
+        const now = new Date();
+        const availableTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0, 0); // 9:00 AM
+        const unavailableTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 0, 0); // 5:00 PM
+
+        const chatHeader = document.querySelector('.chat-header');
+        
+        if (now >= availableTime && now < unavailableTime) {
+            chatHeader.innerHTML = '<h5 class="mb-0">Chat with Us (Online)</h5>';
+        } else {
+            const nextAvailable = new Date(availableTime);
+            if (now > unavailableTime) {
+                nextAvailable.setDate(nextAvailable.getDate() + 1);
+            }
+            const timeUntilAvailable = nextAvailable - now;
+            const hoursUntilAvailable = Math.floor(timeUntilAvailable / (1000 * 60 * 60));
+            const minutesUntilAvailable = Math.floor((timeUntilAvailable % (1000 * 60 * 60)) / (1000 * 60));
+            
+            chatHeader.innerHTML = `<h5 class="mb-0">Chat with Us (Offline)</h5>
+                                    <small>Available in ${hoursUntilAvailable}h ${minutesUntilAvailable}m</small>`;
+        }
+    }
+
+    // Update chat availability every minute
+    updateChatAvailability();
+    setInterval(updateChatAvailability, 60000);
+</script>
+</body>
+</html>
